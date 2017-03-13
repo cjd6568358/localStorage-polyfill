@@ -1,41 +1,57 @@
 (function () {
+    function getCookieDomain() {
+        var host = location.hostname;
+        var ip =
+            /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+        if (ip.test(host) == true || host == 'localhost') return host;
+        var regex = /([^]*).*/;
+        var match = host.match(regex);
+        if (typeof match !=
+            "undefined" && null != match) host = match[1];
+        if (typeof host !=
+            "undefined" && null != host) {
+            var strAry = host.split(".");
+            if (strAry.length > 1) {
+                host = strAry[strAry.length - 2] + "." +
+                    strAry[strAry.length - 1];
+            }
+        }
+        return '.' + host;
+    }
+
+    var domain = getCookieDomain()
+
     function setCookie(name, value, type) {
         var Days = 30;
         var exp = new Date();
         exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-        var tmp = getCookie(type, type);
-        if (!tmp) {
-            tmp = {}
-        }
-        tmp[name] = value;
-        document.cookie = type + "=" + JSON.stringify(tmp) + ";expires=" + exp.toGMTString();
+        document.cookie = type + '_' + name + "=" + encodeURIComponent(JSON.stringify(value)) + ";expires=" + exp.toGMTString() + ";path=/; domain=" + domain + ';';
     }
 
     function getCookie(name, type) {
         var arr, reg;
-        reg = new RegExp("(^| )" + type + "=([^;]*)(;|$)");
+        reg = new RegExp("(^| )" + type + '_' + name + "=([^;]*)(;|$)");
         arr = document.cookie.match(reg);
         if (arr) {
-            if (name != type) {
-                return JSON.parse(arr[2] || '{}')[name]
-            } else {
-                return arr[2]
-            }
+            return JSON.parse(decodeURIComponent(arr[2]) || '{}')
         } else {
             return null
         }
     }
 
     function delCookie(name, type) {
-        var Days = 30;
         var exp = new Date();
-        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-        var tmp = {};
+        exp.setTime(exp.getTime() - 1);
         if (name != type) {
-            tmp = getCookie(type, type);
-            delete tmp[name]
+            document.cookie = type + '_' + name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/; domain=" + domain + ';';
+        } else {
+            document.cookie.split(';').forEach(function (cookie) {
+                if (cookie.indexOf(type) > -1) {
+                    var name = cookie.split('=')[0].trim();
+                    document.cookie = name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/; domain=" + domain + ';';
+                }
+            })
         }
-        document.cookie = type + "=" + JSON.stringify(tmp) + ";expires=" + exp.toGMTString();
     }
     if (!window.localStorage) {
         if (navigator.cookieEnabled) {
