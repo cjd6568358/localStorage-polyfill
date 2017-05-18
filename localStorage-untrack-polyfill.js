@@ -19,7 +19,7 @@
         return '.' + host;
     }
 
-    var domain = getCookieDomain()
+    var domain = getCookieDomain();
 
     function setCookie(name, value, type) {
         var Days = 30;
