@@ -20,12 +20,13 @@
     }
 
     var domain = getCookieDomain();
+    domain = domain == 'localhost' ? '' : "domain=" + domain + ";";
 
     function setCookie(name, value, type) {
         var Days = 30;
         var exp = new Date();
         exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-        document.cookie = type + '_' + name + "=" + encodeURIComponent(JSON.stringify(value)) + ";expires=" + exp.toGMTString() + ";path=/; domain=" + domain + ';';
+        document.cookie = type + '_' + name + "=" + encodeURIComponent(JSON.stringify(value)) + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
     }
 
     function getCookie(name, type) {
@@ -43,12 +44,12 @@
         var exp = new Date();
         exp.setTime(exp.getTime() - 1);
         if (name != type) {
-            document.cookie = type + '_' + name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/; domain=" + domain + ';';
+            document.cookie = type + '_' + name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
         } else {
             document.cookie.split(';').forEach(function (cookie) {
                 if (cookie.indexOf(type) > -1) {
                     var name = cookie.split('=')[0].trim();
-                    document.cookie = name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/; domain=" + domain + ';';
+                    document.cookie = name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
                 }
             })
         }
