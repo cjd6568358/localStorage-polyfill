@@ -1,7 +1,7 @@
 # localStorage-untrack-polyfill
-safari untrack mode localStorage/sessionStorage polyfill
+safari privacy mode localStorage/sessionStorage polyfill
 ## en-us
-fix safari untrack mode localStorage/sessionStorage error,use cookies instead of localStorage/sessionStorage
+fix safari privacy mode localStorage/sessionStorage error,use cookies instead of localStorage/sessionStorage
 ### Usage:
 document.head.insertBefore(polyfill)
 ## zh-cn
