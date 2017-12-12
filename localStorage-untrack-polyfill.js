@@ -1,4 +1,4 @@
-(function () {
+(function() {
     function getCookieDomain() {
         var host = location.hostname;
         var ip =
@@ -26,7 +26,7 @@
         var Days = 30;
         var exp = new Date();
         exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-        document.cookie = type + '_' + name + "=" + encodeURIComponent(JSON.stringify(value)) + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
+        document.cookie = type + '_' + name + "=" + encodeURIComponent(value) + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
     }
 
     function getCookie(name, type) {
@@ -34,7 +34,7 @@
         reg = new RegExp("(^| )" + type + '_' + name + "=([^;]*)(;|$)");
         arr = document.cookie.match(reg);
         if (arr) {
-            return JSON.parse(decodeURIComponent(arr[2]) || '{}')
+            return decodeURIComponent(arr[2]) || {}
         } else {
             return null
         }
@@ -46,7 +46,7 @@
         if (name != type) {
             document.cookie = type + '_' + name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
         } else {
-            document.cookie.split(';').forEach(function (cookie) {
+            document.cookie.split(';').forEach(function(cookie) {
                 if (cookie.indexOf(type) > -1) {
                     var name = cookie.split('=')[0].trim();
                     document.cookie = name + "=" + "" + ";expires=" + exp.toGMTString() + ";path=/;" + domain;
@@ -56,33 +56,34 @@
     }
     if (!window.localStorage) {
         if (navigator.cookieEnabled) {
-            (function (window) {
-                window.localStorage.setItem = function (key, value) {
+            (function(window) {
+                window.localStorage.setItem = window.localStorage.getItem = window.localStorage.clear = null;
+                window.localStorage.setItem = function(key, value) {
                     return setCookie(key, value, 'localStorage')
                 };
-                window.localStorage.getItem = function (key) {
+                window.localStorage.getItem = function(key) {
                     return getCookie(key, 'localStorage')
                 };
-                window.localStorage.removeItem = function (key) {
+                window.localStorage.removeItem = function(key) {
                     return delCookie(key, 'localStorage')
                 };
-                window.localStorage.clear = function () {
+                window.localStorage.clear = function() {
                     return delCookie('localStorage', 'localStorage')
                 }
             })(window)
         } else {
-            (function (window) {
+            (function(window) {
                 var _data = {};
-                window.localStorage.setItem = function (key, value) {
+                window.localStorage.setItem = function(key, value) {
                     return _data[id] = String(val)
                 };
-                window.localStorage.getItem = function (key) {
+                window.localStorage.getItem = function(key) {
                     return _data.hasOwnProperty(id) ? _data[id] : undefined
                 };
-                window.localStorage.removeItem = function (key) {
+                window.localStorage.removeItem = function(key) {
                     return delete _data[id]
                 };
-                window.localStorage.clear = function () {
+                window.localStorage.clear = function() {
                     return _data = {}
                 }
             })(window)
@@ -93,33 +94,34 @@
             window.localStorage.removeItem('_localStorage_test')
         } catch (e) {
             if (navigator.cookieEnabled) {
-                (function (window) {
-                    window.localStorage.setItem = function (key, value) {
+                (function(window) {
+                    window.localStorage.setItem = window.localStorage.getItem = window.localStorage.clear = null;
+                    window.localStorage.setItem = function(key, value) {
                         return setCookie(key, value, 'localStorage')
                     };
-                    window.localStorage.getItem = function (key) {
+                    window.localStorage.getItem = function(key) {
                         return getCookie(key, 'localStorage')
                     };
-                    window.localStorage.removeItem = function (key) {
+                    window.localStorage.removeItem = function(key) {
                         return delCookie(key, 'localStorage')
                     };
-                    window.localStorage.clear = function () {
+                    window.localStorage.clear = function() {
                         return delCookie('localStorage', 'localStorage')
                     }
                 })(window)
             } else {
-                (function (window) {
+                (function(window) {
                     var _data = {};
-                    window.localStorage.setItem = function (key, value) {
+                    window.localStorage.setItem = function(key, value) {
                         return _data[id] = String(val)
                     };
-                    window.localStorage.getItem = function (key) {
+                    window.localStorage.getItem = function(key) {
                         return _data.hasOwnProperty(id) ? _data[id] : undefined
                     };
-                    window.localStorage.removeItem = function (key) {
+                    window.localStorage.removeItem = function(key) {
                         return delete _data[id]
                     };
-                    window.localStorage.clear = function () {
+                    window.localStorage.clear = function() {
                         return _data = {}
                     }
                 })(window)
@@ -128,33 +130,34 @@
     }
     if (!window.sessionStorage) {
         if (navigator.cookieEnabled) {
-            (function (window) {
-                window.sessionStorage.setItem = function (key, value) {
+            (function(window) {
+                window.sessionStorage.setItem = window.sessionStorage.getItem = window.sessionStorage.clear = null;
+                window.sessionStorage.setItem = function(key, value) {
                     return setCookie(key, value, 'sessionStorage')
                 };
-                window.sessionStorage.getItem = function (key) {
+                window.sessionStorage.getItem = function(key) {
                     return getCookie(key, 'sessionStorage')
                 };
-                window.sessionStorage.removeItem = function (key) {
+                window.sessionStorage.removeItem = function(key) {
                     return delCookie(key, 'sessionStorage')
                 };
-                window.sessionStorage.clear = function () {
+                window.sessionStorage.clear = function() {
                     return delCookie('sessionStorage', 'sessionStorage')
                 }
             })(window)
         } else {
-            (function (window) {
+            (function(window) {
                 var _data = {};
-                window.sessionStorage.setItem = function (key, value) {
+                window.sessionStorage.setItem = function(key, value) {
                     return _data[id] = String(val)
                 };
-                window.sessionStorage.getItem = function (key) {
+                window.sessionStorage.getItem = function(key) {
                     return _data.hasOwnProperty(id) ? _data[id] : undefined
                 };
-                window.sessionStorage.removeItem = function (key) {
+                window.sessionStorage.removeItem = function(key) {
                     return delete _data[id]
                 };
-                window.sessionStorage.clear = function () {
+                window.sessionStorage.clear = function() {
                     return _data = {}
                 }
             })(window)
@@ -165,33 +168,34 @@
             window.sessionStorage.removeItem('_sessionStorage_test');
         } catch (e) {
             if (navigator.cookieEnabled) {
-                (function (window) {
-                    window.sessionStorage.setItem = function (key, value) {
+                (function(window) {
+                    window.sessionStorage.setItem = window.sessionStorage.getItem = window.sessionStorage.clear = null;
+                    window.sessionStorage.setItem = function(key, value) {
                         return setCookie(key, value, 'sessionStorage')
                     };
-                    window.sessionStorage.getItem = function (key) {
+                    window.sessionStorage.getItem = function(key) {
                         return getCookie(key, 'sessionStorage')
                     };
-                    window.sessionStorage.removeItem = function (key) {
+                    window.sessionStorage.removeItem = function(key) {
                         return delCookie(key, 'sessionStorage')
                     };
-                    window.sessionStorage.clear = function () {
+                    window.sessionStorage.clear = function() {
                         return delCookie('sessionStorage', 'sessionStorage')
                     }
                 })(window)
             } else {
-                (function (window) {
+                (function(window) {
                     var _data = {};
-                    window.sessionStorage.setItem = function (key, value) {
+                    window.sessionStorage.setItem = function(key, value) {
                         return _data[id] = String(val)
                     };
-                    window.sessionStorage.getItem = function (key) {
+                    window.sessionStorage.getItem = function(key) {
                         return _data.hasOwnProperty(id) ? _data[id] : undefined
                     };
-                    window.sessionStorage.removeItem = function (key) {
+                    window.sessionStorage.removeItem = function(key) {
                         return delete _data[id]
                     };
-                    window.sessionStorage.clear = function () {
+                    window.sessionStorage.clear = function() {
                         return _data = {}
                     }
                 })(window)
